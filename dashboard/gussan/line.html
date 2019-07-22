@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js" ></script>
+</head>
+<body style = "font-family : UD デジタル 教科書体 NK-R;">
+
+  <h1 style = "text-align: center;">年間の売上割合</h1>
+
+  <canvas id = "myDoughnutChart" style = "position: relative; height : 110px; width: 300px;" ></canvas>
+
+  <script>
+    // 2) CSVから２次元配列に変換
+    function csv2Array(str) {
+      var csvData = [];
+      var lines = str.split("\n");
+      for (var i = 0; i < lines.length; ++i) {
+        var cells = lines[i].split(",");
+        csvData.push(cells);
+      }
+      return csvData;
+    }
+
+
+    function drawBarChart(data) {
+      // 3)chart.jsのdataset用の配列を用意
+      var tmpLabel = [],tmpData = [],tmpMonth = [];
+      for (var row in data) {
+        tmpLabel.push(data[row][1])
+        tmpMonth.push(data[row][2])
+        tmpData.push(data[row][14])
+      };
+
+      var data16 = [], data17 = [],data18 = [];
+      data16[0] = 0;
+      data17[0] = 0;
+      data18[0] = 0;
+      for(month =1;month < 13;month++){
+        data16[month] = 0;
+        data17[month] = 0;
+        data18[month] = 0;
+      }
+// 一か月毎やるように書き換える
+      
+      for(var i in tmpLabel){
+        switch(tmpLabel[i]){
+          case "2016":
+            data16[tmpMonth[i]] += parseInt(tmpData[i],10);
+            break;
+          case "2017":
+            data17[tmpMonth[i]] += parseInt(tmpData[i],10);
+            break;
+          case "2018":
+            data18[tmpMonth[i]] += parseInt(tmpData[i],10);
+            break;
+        }
+      }
+
+      // 4)chart.jsで描画
+      var ctx = document.getElementById("myDoughnutChart");
+      var myChart = new Chart(ctx, {
+        //グラフの種類
+        type: 'line',
+        //データの設定
+        data: {
+          //データ項目のラベル
+          labels: ['4月','5月','6月','7月','8月','9月','10月','11月','12月','1月','2月','3月'],
+          //データセット
+          datasets: [
+            {
+              label: tmpLabel[1],
+              data: [data16[4],data16[5],data16[6],data16[7],data16[8],data16[9],data16[10],data16[11],data16[12],data16[1],data16[2],data16[3]],
+              borderColor: "#4287f5",
+              backgroundColor: "rgba(0,0,0,0)"
+            },
+            {
+              label: tmpLabel[13],
+              data: [data17[4],data17[5],data17[6],data17[7],data17[8],data17[9],data17[10],data17[11],data17[12],data17[1],data17[2],data17[3]],
+              borderColor: "#f54263",
+              backgroundColor: "rgba(0,0,0,0)"
+            },
+            {
+              label: tmpLabel[26],
+              data: [data18[4],data18[5],data18[6],data18[7],data18[8],data18[9],data18[10],data18[11],data18[12],data18[1],data18[2],data18[3]],
+              borderColor: "#72f542",
+              backgroundColor: "rgba(0,0,0,0)"
+            }
+            ]
+        },
+        options: {
+          title: {
+            display: true,
+            //text: 
+          },
+          scales: {
+            yAxes: [{
+              ticks: {
+                suggestedMax: 3000000,
+                suggestedMin: 10000,
+                stepSize: 500000,
+                /*callback: function(value, index, values){
+                return  value +  '度'
+                }*/
+              }
+            }]
+          }
+        }
+
+     });
+    }
+
+    function main() {
+      // 1) ajaxでCSVファイルをロード
+      var req = new XMLHttpRequest();
+      var filePath = 'data.csv';
+      req.open("GET", filePath, true);
+      req.onload = function() {
+        // 2) CSVデータ変換の呼び出し
+        data = csv2Array(req.responseText);
+        // 3) chart.jsデータ準備、4) chart.js描画の呼び出し
+        drawBarChart(data);
+      }
+      req.send(null);
+    }
+
+    main();
+  </script>
+
+</body>
+</html>
