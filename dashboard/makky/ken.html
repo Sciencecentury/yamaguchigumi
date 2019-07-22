@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang = "ja">
+<head>
+  <!-- jsを読み込む -->
+  <meta charset = "utf-8">
+  <script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+  <script src = "csvgetter.js"></script>
+  <script src = "canvasDisplay.js"></script>
+  <script src = "del.js"></script>  
+  <script src = "print.js"></script>  
+  <title>県別売上合計比較</title>
+  
+  		<!--CSSの記述-->
+<style type="text/css">
+canvas {
+	border: 1px solid #000000;
+}
+
+.box2016, .box2017, .box2018 {
+  float: left;
+  border-color: blue;
+  width: 33.3333%;
+}
+
+body {
+background-color:#90ee90;
+}
+
+div {
+background-color:#FFF;
+z-index: 2;
+}
+
+.circle_b {
+	border : solid 1px skyblue;
+}
+</style>
+
+
+</head>
+
+
+<body style = "font-family: UD デジタル 教科書体 NK-R;">
+	<h1 style = "text-align : center;">県別売上合計比較</h1>
+	
+	<div id ="box2016" class="box2016" style = "width: 33.3333%; height: 50%;">
+		<form>
+			<input type="button" value="2016年表示" onclick="Chartdisplay(0,'2016')">
+			<input type="button" value="非表示" onclick="Chartdisplay(1,'2016')">
+			<input type="button" value="削除" onclick="del('box2016')">
+		</form>
+		<canvas id = "Chart2016" style = "width: 100%; height: 50;" class = "circle_b"></canvas>
+   		<ul id ="print2016"></ul>
+   	</div>  
+   
+   
+   
+	<div id ="box2017" class="box2017" style = "width: 33.3333%; height: 50%;">
+		<form>
+			<input type="button" value="2017年表示" onclick="Chartdisplay(0,2017)">
+			<input type="button" value="非表示" onclick="Chartdisplay(1,2017)">
+			<input type="button" value="削除" onclick="del('box2017')">
+		</form>
+		<canvas id = "Chart2017" style = "width: 100%; height: 50;" class = "circle_b"></canvas>
+		<ul id ="print2017"></ul>
+	</div> 
+    
+    
+    <div id ="box2018" class="box2018" style = "width: 33.3333%; height: 50%;">
+		<form>
+			<input type="button" value="2018年表示" onclick="Chartdisplay(0,2018)">
+			<input type="button" value="非表示" onclick="Chartdisplay(1,2018)">
+			<input type="button" value="削除" onclick="del('box2018')">
+		</form>
+    	<canvas id = "Chart2018" style = "width: 100%; height: 50;" class = "circle_b"></canvas>
+    	<ul id ="print2018"></ul>
+    </div> 
+    
+ <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+ 
+ <p><a href="#" onClick="history.back(); return false;">もどる</a></p> 
+  <input type="button" value="再読込" onclick="window.location.reload();" />
+
+</body>
+</html> 
