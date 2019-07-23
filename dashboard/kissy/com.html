@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang = "ja">
+<head>
+  <!-- jsを読み込む -->
+  <meta charset = "utf-8">
+  <script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+  <script src = "csvgetter.js"></script>
+  <title>商品別売り上げ比較</title>
+  
+  		<!--CSSの記述-->
+<style type = "text/css">
+
+canvas {
+	border: 0px solid #000000;
+}
+
+body {
+background-color:#90ee90;
+font-family: UD デジタル 教科書体 NK-R;
+text-align: center;
+}
+
+div {
+background-color:#FFF;
+z-index: 2;
+}
+
+</style>
+</head>
+
+<body>
+	<h1>商品別売り上げ比較</h1>
+	
+	<!-- 2016 -->
+	<div id = "box2016" class = "box2016" style = "width: 90%; height: 90%; margin-left: 60px;">
+			<h3><p style = "padding-top: 20px;">2016年</p></h3>
+		<canvas id = "Chart2016" style = "width : 100%; height: auto;"></canvas>
+   		<ul id ="print2016"></ul>
+   	</div>  
+   
+   <!-- 2017 -->
+	<div id = "box2017" class = "box2017" style = "width: 90%; height: 90%; margin-left: 60px;">
+		<h3><p style = "padding-top: 20px;">2017年</p></h3>
+		<canvas id = "Chart2017"  style = "width: 100%; height: auto;"></canvas>
+		<ul id ="print2017"></ul>
+	</div> 
+    
+    <!-- 2018 -->
+	<div id = "box2018" class = "box2018" style = "width: 90%; height: 90%; margin-left: 60px;">
+		<h3><p style = "padding-top: 20px;">2018年</p></h3>
+    	<canvas id = "Chart2018" style = "width: 100%; height: auto;"></canvas>
+    	<ul id = "print2018"></ul>
+    </div> 
+
+ <p><a href = "#" onClick="history.back(); return false;">もどる</a></p> 
+
+</body>
+</html> 
