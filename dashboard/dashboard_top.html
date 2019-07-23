@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang = "ja">
+<head>
+    <meta charset = "utf-8">
+    <!-- js、cssを読み込む -->
+    <link rel = "stylesheet" href = "dashboard_top.css" type = "text/css">
+    <link rel = "stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.css" />
+    <link rel = "stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.Default.css" />
+    <link rel = "stylesheet" href="https://unpkg.com/leaflet@1.3.0/dist/leaflet.css" />
+
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
+    <script src = "https://unpkg.com/leaflet@1.3.0/dist/leaflet.js"></script>
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src = "https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster.js"></script>
+    <title>dashboard</title>
+</head>
+<body>
+    <!-- タイトル -->
+    <h1 class = "dashboard">dashboard</h1>
+    
+    <!-- 地図 -->
+        <h2>店と学校の所在</h2>
+    
+    <div id = "mapcontainer" class = "map" style = "width : 1300px; height : 400px;"></div>
+        <script>   
+            $.get('http://localhost/sentan/dashboard/api.php?target=schooldata', {}, function(res) {    
+                console.log(res)    
+                drawMap(res.data)
+            })            
+            /*マーカーと地図表示*/
+            function drawMap(data) {
+                var map = L.map('mapcontainer');
+                var markers = L.markerClusterGroup({maxClusterRadius: 50});
+                map.setView([34.6640,133.9186], 9);    
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);    
+                data.forEach(function(spot) {
+                    var marker = L.marker([spot[2],spot[1]]).bindPopup(spot[0]);
+                    markers.addLayer(marker);
+                })
+                map.addLayer(markers);
+                    
+                $.get('http://localhost/sentan/dashboard/api.php?target=shop', {}, function(res) {
+                    console.log(res)
+                    addMarker(res.data)
+                })
+                /*ここからが店舗のマーカー*/
+                function addMarker(data) {
+                    var sampleIcon = L.icon({
+                        iconUrl: 'clothers_male.png',
+                        iconRetinaUrl: 'clothers_male.png',
+                        iconSize: [50, 50],
+                        iconAnchor: [25, 50],
+                        popupAnchor: [0, -50],
+                    });
+                    data.forEach(function(spot) {
+                        L.marker([spot[2],spot[1]],{icon : sampleIcon}).addTo(map).bindPopup(spot[0]);
+                    })
+                }
+            }                    
+        </script>
+
+    <!-- 店舗別年間販売件数 -->
+    <span class = "left">
+    <div class = "graphLink">
+        <h2 class = "itemTitle">商品別売り上げ比較</h2>
+            <a href = "kissy/com.html">
+                <div style = "padding-left: 40px;"><img src = "img/kissy.png"></div>
+            </a>
+    </div>
+    </span>
+
+    <!-- 年間・月間の売上割合 -->
+    <span class = "ue">
+    <span class = "right">        
+    <div class = "graphLink">
+        <h2 class = "itemTitle">年間・月間の売上割合</h2>
+            <a href = "gussan/line.html">
+                <div style = "padding-left: 30px;"><img src = "img/gussan.png"></div>
+            </a>
+    </div>
+    </span>
+    
+    <!-- 各店舗ごとの売上比較 -->
+    <span class = "left">
+    <div class = "graphLink">
+        <h2 class = "itemTitle">各店舗ごとの売上比較</h2>
+            <a href = "ittyan/bar.html">
+                    <div style = "padding-left: 30px;"><img src = "img/sales_comparison_store.png"></div>
+            </a>
+    </div>
+    </span>
+    
+    <!-- 商品ごとの売上 -->
+    <span class = "right">
+    <div class = "graphLink">
+        <h2 class = "itemTitle">商品ごとの売上</h2>
+            <a href = "nimo/product_sales.html">
+                <img src = "img/bar_graph.png">
+            </a>
+    </div>
+    </span>
+
+    <!-- 県別合計売上 -->
+    <span class= "left">
+    <div class = "graphLink">
+        <h2 class = "itemTitle">県別売上合計比較</h2>
+            <a href = "makky/ken.html">
+                <div style = " margin-left: 20px; margin-top: 40px;"><img src = "img/makky.png"></div>
+            </a>
+    </div>
+    </span>
+</body>
+</html>
